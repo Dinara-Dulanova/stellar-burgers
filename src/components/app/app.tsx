@@ -43,6 +43,8 @@ const App = () => {
         <Route path='*' element={<NotFound404 />} />
         {/* <Route path="/login" element={<ProtectedRoute><ListPage /></ProtectedRoute>} /> */}
         <Route path='/ingredients/:id' element={<IngredientDetails />} />
+        <Route path='/login' element={<Login />} />
+        <Route path='/register' element={<Register />} />
 
         {/* <Route
           path='/ingredients/:id'

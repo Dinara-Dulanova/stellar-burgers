@@ -2,12 +2,12 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { getIngredientsApi, getOrdersApi } from '../../utils/burger-api';
 import { TOrder, RequestStatus } from '../../utils/types';
 
-type OrderState = {
+type TOrderState = {
   orders: TOrder[];
   status: RequestStatus;
 };
 
-const initialState: OrderState = {
+const initialState: TOrderState = {
   orders: [],
   status: RequestStatus.Idle
 };
