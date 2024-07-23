@@ -4,12 +4,14 @@ import {
   getOrdersApi,
   getUserApi,
   loginUserApi,
+  logoutApi,
   registerUserApi,
   TLoginData,
-  TRegisterData
+  TRegisterData,
+  updateUserApi
 } from '@api';
 import { fetchOrders } from './orders';
-import { getCookie, setCookie } from '../../utils/cookie';
+import { deleteCookie, getCookie, setCookie } from '../../utils/cookie';
 
 type TUserState = {
   // userData: TUser | null;
@@ -32,11 +34,18 @@ const initialState: TUserState = {
 export const registerUser = createAsyncThunk(
   'user/register',
   async (data: TRegisterData) => {
-    console.log(data);
     const response = await registerUserApi(data);
-    console.log(response);
     localStorage.setItem('refreshToken', response.refreshToken);
     setCookie('accessToken', response.accessToken);
+    return response;
+  }
+);
+
+export const updateUser = createAsyncThunk(
+  'user/update',
+  async (user: Partial<TRegisterData>) => {
+    const response = await updateUserApi(user);
+    console.log(response);
     return response;
   }
 );
@@ -44,36 +53,36 @@ export const registerUser = createAsyncThunk(
 export const loginUser = createAsyncThunk(
   'user/loginUser',
   async (data: TLoginData) => {
-    console.log(data);
     const response = await loginUserApi(data);
-    console.log(response);
     localStorage.setItem('refreshToken', response.refreshToken);
     setCookie('accessToken', response.accessToken);
     return response;
   }
 );
 
+export const logoutUser = createAsyncThunk('user/logoutUser', async () => {
+  const response = await logoutApi();
+  localStorage.removeItem('refreshToken');
+  deleteCookie('accessToken');
+  // localStorage.setItem('refreshToken', response.refreshToken);// setCookie('accessToken', response.accessToken);
+  return response;
+});
+
 //авточек юзера для перезегрузки
 export const getUser = createAsyncThunk(
   'user/getUser',
   async (_, { dispatch }) => {
-    console.log('GET USER');
     if (getCookie('accessToken')) {
       getUserApi()
         .then((res) => {
-          console.log('RES');
-          console.log(res);
           dispatch(fillUserData(res.user));
         })
         .catch((error) => {
-          console.log('ERROR');
-          console.log(error);
+          dispatch(errorFillUserData());
         });
     } else {
-      console.log('no auth');
+      dispatch(errorFillUserData());
     }
-    // const userData = await getUserApi();
-    // return userData;
   }
 );
 
@@ -84,8 +93,11 @@ export const userSlice = createSlice({
     fillUserData: (state, action) => {
       state.userData = action.payload;
       state.status = RequestStatus.Succes;
+    },
+    errorFillUserData: (state) => {
+      state.status = RequestStatus.Failed;
     }
-  }, //проаерка авторизации, разлогиниться, что-то непонятное с чек
+  },
   extraReducers: (builder) => {
     builder
       //register
@@ -111,20 +123,35 @@ export const userSlice = createSlice({
         state.userData = action.payload.user;
         state.status = RequestStatus.Succes;
         state.loginUserError = '';
+      })
+      //logout
+      .addCase(logoutUser.pending, (state) => {
+        state.status = RequestStatus.Loading;
+      })
+      .addCase(logoutUser.rejected, (state, action) => {
+        state.status = RequestStatus.Failed;
+        state.loginUserError = action.error.message;
+      })
+      .addCase(logoutUser.fulfilled, (state, action) => {
+        state.userData = null;
+        state.status = RequestStatus.Idle;
+        state.loginUserError = '';
+      })
+      //update
+      .addCase(updateUser.pending, (state) => {
+        state.status = RequestStatus.Loading;
+      })
+      .addCase(updateUser.rejected, (state, action) => {
+        state.status = RequestStatus.Failed;
+        state.loginUserError = action.error.message;
+      })
+      .addCase(updateUser.fulfilled, (state, action) => {
+        state.userData = action.payload.user;
+        state.status = RequestStatus.Succes;
+        state.loginUserError = '';
       });
-    //авточек
-    // .addCase(getUser.pending, (state) => {
-    //   state.status = RequestStatus.Loading;
-    // })
-    // .addCase(getUser.fulfilled, (state, action) => {
-    //   state.status = RequestStatus.Succes;
-    //   state.userData = action.payload;
-    // })
-    // .addCase(getUser.rejected, (state, action) => {
-    //   state.status = RequestStatus.Failed;
-    // });
   }
 });
 
 export const userReducer = userSlice.reducer;
-export const { fillUserData } = userSlice.actions;
+export const { fillUserData, errorFillUserData } = userSlice.actions;
