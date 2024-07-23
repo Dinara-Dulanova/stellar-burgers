@@ -19,13 +19,17 @@ import { useEffect } from 'react';
 import { fetchIngredients } from '../../services/slices/ingredients';
 import { useSelector } from 'react-redux';
 import { fetchFeeds } from '../../services/slices/feeds';
+import { getUser } from '../../services/slices/user';
 
 const App = () => {
   const ingredientsState = useSelector((state: RootState) => state.ingredients);
+  const userState = useSelector((state: RootState) => state.user.userData);
+  // console.log(userState);
 
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(fetchIngredients());
+    dispatch(getUser()); //через рефреш ключ
     // dispatch(fetchFeeds());
   }, [dispatch]);
 
@@ -43,7 +47,7 @@ const App = () => {
         <Route path='*' element={<NotFound404 />} />
         {/* <Route path="/login" element={<ProtectedRoute><ListPage /></ProtectedRoute>} /> */}
         <Route path='/ingredients/:id' element={<IngredientDetails />} />
-        <Route path='/login' element={<Login />} />
+        {/* <Route path='/login' element={<Login />} /> */}
         <Route path='/register' element={<Register />} />
 
         {/* <Route
@@ -55,19 +59,36 @@ const App = () => {
           }
         /> */}
 
-        <Route element={<ProtectedRoute accessRoles={[]} />}>
-          <Route path='/login' element={<Login />} />
+        <Route
+          path='/login'
+          element={
+            <ProtectedRoute onlyUnAuth>
+              <Login />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path='/profile'
+          element={
+            <ProtectedRoute>
+              <Profile />
+            </ProtectedRoute>
+          }
+        />
+
+        {/* <Route element={<ProtectedRoute accessRoles={[]} />}>
+          { <Route path='/login' element={<Login />} /> }
           <Route path='/register' element={<Register />} />
           <Route path='/forgot-password' element={<ForgotPassword />} />
           <Route path='/reset-password' element={<ResetPassword />} />
           <Route path='/profile' element={<Profile />} />
           <Route path='/profile/orders' element={<ProfileOrders />} />
-          {/* <Route path='/profile/orders/:number' element={
+          <Route path='/profile/orders/:number' element={
               // <Modal title='test' children='<OrderInfo />' >
               //   <OrderInfo />
               // </Modal>
-            } /> */}
-        </Route>
+            } />
+        </Route> */}
 
         {
           /* <Route path='/feed/:number' element={
