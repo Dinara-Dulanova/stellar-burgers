@@ -40,7 +40,7 @@ export const BurgerConstructor: FC = () => {
     }
   };
   const closeOrderModal = () => {
-    dispatch(clearOrder());
+    // dispatch(clearOrder());
   };
 
   const price = useMemo(
