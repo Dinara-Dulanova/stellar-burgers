@@ -1,18 +1,25 @@
-import { FC, useMemo } from 'react';
+import { FC, useEffect, useMemo } from 'react';
 import { Preloader } from '../ui/preloader';
 import { OrderInfoUI } from '../ui/order-info';
 import { TIngredient } from '@utils-types';
 import { useDispatch, useSelector } from '../../services/store';
 import { useParams } from 'react-router-dom';
+import { fetchFeeds } from '../../services/slices/feeds';
 
 export const OrderInfo: FC = () => {
   /** TODO: взять переменные orderData и ingredients из стора */
   const dispatch = useDispatch();
   const { number } = useParams();
-
+  console.log('orderInfo');
+  console.log(number);
   const orderData = useSelector((store) =>
     store.feed.feeds.orders.find((order) => order.number == Number(number))
   );
+
+  useEffect(() => {
+    console.log('fetchFeeds');
+    dispatch(fetchFeeds());
+  }, [dispatch]);
   // const orderData = {
   //   createdAt: '',
   //   ingredients: [],

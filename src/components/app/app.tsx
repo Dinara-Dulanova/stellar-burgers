@@ -45,19 +45,8 @@ const App = () => {
         <Route path='/' element={<ConstructorPage />} />
         <Route path='/feed' element={<Feed />} />
         <Route path='*' element={<NotFound404 />} />
-        {/* <Route path="/login" element={<ProtectedRoute><ListPage /></ProtectedRoute>} /> */}
         <Route path='/ingredients/:id' element={<IngredientDetails />} />
-        {/* <Route path='/login' element={<Login />} /> */}
         <Route path='/register' element={<Register />} />
-
-        {/* <Route
-          path='/ingredients/:id'
-          element={
-            <Modal title='Детали ингредиента' onClose={() => navigate(-1)}>
-              <IngredientDetails />
-            </Modal>
-          }
-        /> */}
 
         <Route
           path='/login'
@@ -76,29 +65,16 @@ const App = () => {
           }
         />
 
-        {/* <Route element={<ProtectedRoute accessRoles={[]} />}>
-          { <Route path='/login' element={<Login />} /> }
-          <Route path='/register' element={<Register />} />
-          <Route path='/forgot-password' element={<ForgotPassword />} />
-          <Route path='/reset-password' element={<ResetPassword />} />
-          <Route path='/profile' element={<Profile />} />
-          <Route path='/profile/orders' element={<ProfileOrders />} />
-          <Route path='/profile/orders/:number' element={
-              // <Modal title='test' children='<OrderInfo />' >
-              //   <OrderInfo />
-              // </Modal>
-            } />
-        </Route> */}
+        <Route
+          path='/profile/orders'
+          element={
+            <ProtectedRoute>
+              <ProfileOrders />
+            </ProtectedRoute>
+          }
+        />
 
-        {
-          /* <Route path='/feed/:number' element={
-            <Modal>
-              <OrderInfo />
-            </Modal>
-          } />*/
-
-          <Route path='*' element={<NotFound404 />} />
-        }
+        <Route path='*' element={<NotFound404 />} />
       </Routes>
 
       {backgroundLocation && (
@@ -114,7 +90,15 @@ const App = () => {
           <Route
             path='/feed/:number'
             element={
-              <Modal title='Детали ингредиента' onClose={() => navigate(-1)}>
+              <Modal title='Детали заказа' onClose={() => navigate(-1)}>
+                <OrderInfo />
+              </Modal>
+            }
+          />
+          <Route
+            path='/profile/orders/:number'
+            element={
+              <Modal title='Детали заказа' onClose={() => navigate(-1)}>
                 <OrderInfo />
               </Modal>
             }
