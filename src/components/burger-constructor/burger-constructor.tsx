@@ -4,6 +4,7 @@ import { BurgerConstructorUI } from '@ui';
 import { useDispatch, useSelector } from '../../services/store';
 import { useNavigate } from 'react-router-dom';
 import { clearOrder, createOrder } from '../../services/slices/orders';
+import { clearConstructorItems } from '../../services/slices/constructor';
 
 export const BurgerConstructor: FC = () => {
   const navigate = useNavigate();
@@ -17,9 +18,7 @@ export const BurgerConstructor: FC = () => {
   // };
 
   const constructorItems = useSelector((state) => state.constructorBurger);
-
   const orderRequest = useSelector((state) => state.order.orderRequest);
-
   const orderModalData = useSelector((state) => state.order.orderModalData);
   const user = useSelector((store) => store.user);
 
@@ -28,19 +27,18 @@ export const BurgerConstructor: FC = () => {
     if (!user.userData) {
       navigate('/login');
     } else {
-      console.log('u can order');
       const constructorItemsIds = constructorItems.ingredients.map(
         //айдишники только ингредиентов
         (item) => item._id
       );
       //добавим айдишники булок
       constructorItemsIds.push(constructorItems.bun._id);
-      console.log(constructorItemsIds);
       dispatch(createOrder(constructorItemsIds));
     }
   };
   const closeOrderModal = () => {
-    // dispatch(clearOrder());
+    dispatch(clearOrder());
+    dispatch(clearConstructorItems());
   };
 
   const price = useMemo(

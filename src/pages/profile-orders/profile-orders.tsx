@@ -10,7 +10,6 @@ export const ProfileOrders: FC = () => {
   // const orders: TOrder[] = useSelector((state) => state.feed.feeds.orders);
   const dispatch = useDispatch();
   const orders: TOrder[] = useSelector((state) => state.order.orders);
-  console.log('profile orders');
 
   useEffect(() => {
     dispatch(fetchOrders());

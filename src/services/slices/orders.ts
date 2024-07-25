@@ -17,17 +17,16 @@ const initialState: TOrderState = {
   orderModalData: null
 };
 
-export const fetchOrders = createAsyncThunk('orders/orders', async () => {
-  console.log('fetchOrders');
-  return await getOrdersApi();
-});
+export const fetchOrders = createAsyncThunk(
+  'orders/orders',
+  async () => await getOrdersApi()
+);
 
 export const createOrder = createAsyncThunk(
-  'orders/createOrder',
+  'order/createOrder',
   async (data: string[]) => {
-    console.log('createOrder');
-    console.log(data);
-    return await orderBurgerApi(data);
+    const res = await orderBurgerApi(data);
+    return res.order;
   }
 );
 
@@ -35,7 +34,7 @@ const orderSlice = createSlice({
   name: 'orders',
   initialState,
   reducers: {
-    clearOrder: (state, action) => {
+    clearOrder: (state) => {
       state.orderRequest = false;
       state.orderModalData = null;
     }
@@ -61,7 +60,6 @@ const orderSlice = createSlice({
       .addCase(createOrder.fulfilled, (state, action) => {
         state.status = RequestStatus.Succes;
         state.orderRequest = false;
-        // @ts-ignore
         state.orderModalData = action.payload;
       })
       .addCase(createOrder.rejected, (state) => {

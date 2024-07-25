@@ -48,9 +48,9 @@ const constructorSlice = createSlice({
         state.ingredients.splice(action.payload, 1);
       }
     },
-    clearConstructorItems: (state, action) => {
-      //при успешном оформлении заказа чистим корзину
-      state = initialState;
+    clearConstructorItems: (state) => {
+      state.bun = initialState.bun;
+      state.ingredients = initialState.ingredients;
     }
   }
 });

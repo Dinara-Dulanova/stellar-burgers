@@ -10,25 +10,13 @@ export const OrderInfo: FC = () => {
   /** TODO: взять переменные orderData и ingredients из стора */
   const dispatch = useDispatch();
   const { number } = useParams();
-  console.log('orderInfo');
-  console.log(number);
   const orderData = useSelector((store) =>
     store.feed.feeds.orders.find((order) => order.number == Number(number))
   );
 
   useEffect(() => {
-    console.log('fetchFeeds');
     dispatch(fetchFeeds());
   }, [dispatch]);
-  // const orderData = {
-  //   createdAt: '',
-  //   ingredients: [],
-  //   _id: '',
-  //   status: '',
-  //   name: '',
-  //   updatedAt: 'string',
-  //   number: 0
-  // };
 
   const ingredients: TIngredient[] = useSelector(
     (state) => state.ingredients.ingredients

@@ -45,7 +45,6 @@ export const updateUser = createAsyncThunk(
   'user/update',
   async (user: Partial<TRegisterData>) => {
     const response = await updateUserApi(user);
-    console.log(response);
     return response;
   }
 );
