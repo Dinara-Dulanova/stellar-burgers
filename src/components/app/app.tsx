@@ -13,24 +13,17 @@ import '../../index.css';
 import styles from './app.module.css';
 import { AppHeader, IngredientDetails, Modal, OrderInfo } from '@components';
 import { Routes, Route, useNavigate, useLocation } from 'react-router-dom';
-import { ProtectedRoute } from '../../components/protected-route';
-import { RootState, useDispatch } from '../../services/store';
+import { ProtectedRoute } from '../protected-route';
+import { useDispatch } from '../../services/store';
 import { useEffect } from 'react';
 import { fetchIngredients } from '../../services/slices/ingredients';
-import { useSelector } from 'react-redux';
-import { fetchFeeds } from '../../services/slices/feeds';
 import { getUser } from '../../services/slices/user';
 
 const App = () => {
-  const ingredientsState = useSelector((state: RootState) => state.ingredients);
-  const userState = useSelector((state: RootState) => state.user.userData);
-  // console.log(userState);
-
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(fetchIngredients());
     dispatch(getUser()); //через рефреш ключ
-    // dispatch(fetchFeeds());
   }, [dispatch]);
 
   const navigate = useNavigate();
@@ -46,7 +39,15 @@ const App = () => {
         <Route path='/feed' element={<Feed />} />
         <Route path='*' element={<NotFound404 />} />
         <Route path='/ingredients/:id' element={<IngredientDetails />} />
-        <Route path='/register' element={<Register />} />
+
+        <Route
+          path='/register'
+          element={
+            <ProtectedRoute onlyUnAuth>
+              <Register />
+            </ProtectedRoute>
+          }
+        />
 
         <Route
           path='/login'

@@ -18,6 +18,7 @@ export const ProtectedRoute = ({
   const user = useSelector((store) => store.user.userData); // userDataSelector — селектор получения пользователя из store
 
   const location = useLocation();
+  const from = location.state?.from || '/';
 
   if (isAuthChecked === RequestStatus.Loading) {
     // пока идёт чекаут пользователя, показываем прелоадер
@@ -26,12 +27,12 @@ export const ProtectedRoute = ({
 
   if (!onlyUnAuth && !user) {
     // если пользователь на странице авторизации и данных в хранилище нет, то делаем редирект
-    return <Navigate replace to='/login' />;
+    return <Navigate to='/login' state={{ from: location }} />;
   }
 
   if (onlyUnAuth && user) {
     // если пользователь на странице авторизации и данные есть в хранилище
-    return <Navigate replace to='/' />;
+    return <Navigate to={from} />;
   }
 
   return children;

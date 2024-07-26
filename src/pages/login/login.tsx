@@ -5,7 +5,6 @@ import { loginUser } from '../../services/slices/user';
 
 export const Login: FC = () => {
   const dispatch = useDispatch();
-  // const isAuthChecked = useSelector((store) => store.user.status);
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');

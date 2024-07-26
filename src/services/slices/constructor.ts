@@ -2,6 +2,7 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { getIngredientsApi } from '../../utils/burger-api';
 import { TIngredient, TConstructorIngredient } from '../../utils/types';
 import { ingredientsReducer } from './ingredients';
+import { v4 as uuidv4 } from 'uuid';
 
 type ConstructorState = {
   ingredients: TConstructorIngredient[];
@@ -13,6 +14,11 @@ const initialState: ConstructorState = {
   ingredients: [],
   bun: null
 };
+
+export const addConstructorItem = (ingredient: TIngredient) => ({
+  type: 'constructor/addConstructorItem',
+  payload: { ...ingredient, uniqueId: uuidv4() }
+});
 
 const constructorSlice = createSlice({
   name: 'constructor',
@@ -56,7 +62,7 @@ const constructorSlice = createSlice({
 });
 
 export default constructorSlice.reducer;
-export const addConstructorItem = constructorSlice.actions.addConstructorItem;
+// export const addConstructorItem = constructorSlice.actions.addConstructorItem;
 export const moveConstructorItemUP =
   constructorSlice.actions.moveConstructorItemUP;
 export const moveConstructorItemDown =

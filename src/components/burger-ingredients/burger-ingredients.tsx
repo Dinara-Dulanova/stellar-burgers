@@ -3,12 +3,11 @@ import { useInView } from 'react-intersection-observer';
 
 import { RequestStatus, TTabMode } from '@utils-types';
 import { BurgerIngredientsUI } from '../ui/burger-ingredients';
-// import { useSelector } from 'react-redux';
-import { RootState, useDispatch, useSelector } from '../../services/store';
+import { RootState, useSelector } from '../../services/store';
 
 export const BurgerIngredients: FC = () => {
   // const dispatch = useDispatch();
-  const ingredientsState = useSelector((state: RootState) => state.ingredients);
+  const ingredientsState = useSelector((state) => state.ingredients);
 
   // const { buns, mains, sauces, status, error } = useSelector((state: AppState) => state.ingredients);
   /** TODO: взять переменные из стора */
