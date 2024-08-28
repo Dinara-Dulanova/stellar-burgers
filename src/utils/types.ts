@@ -10,6 +10,12 @@ export type TIngredient = {
   image: string;
   image_large: string;
   image_mobile: string;
+  uniqueId?: string;
+};
+
+type IngredientsState = {
+  ingredients: TIngredient[];
+  status: RequestStatus;
 };
 
 export type TConstructorIngredient = TIngredient & {
@@ -38,3 +44,10 @@ export type TUser = {
 };
 
 export type TTabMode = 'bun' | 'sauce' | 'main';
+
+export const enum RequestStatus {
+  Idle = 'Idle',
+  Loading = 'Loading',
+  Succes = 'Succes',
+  Failed = 'Failed'
+}
