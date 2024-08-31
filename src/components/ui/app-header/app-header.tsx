@@ -49,8 +49,9 @@ export const AppHeaderUI: FC<TAppHeaderUIProps> = ({ userName }) => (
           className={({ isActive }) =>
             `${styles.link} ${isActive ? styles.link_active : ''} ${styles.profile_link}`
           }
+          data-cy='login'
         >
-          <p className='text text_type_main-default ml-2'>
+          <p className='text text_type_main-default ml-2' data-cy='user-name'>
             {userName || 'Личный кабинет'}
           </p>
         </NavLink>
