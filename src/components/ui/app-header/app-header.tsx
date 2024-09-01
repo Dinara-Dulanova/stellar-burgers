@@ -22,7 +22,10 @@ export const AppHeaderUI: FC<TAppHeaderUIProps> = ({ userName }) => (
             end
           >
             <BurgerIcon type='primary' />
-            <p className='text text_type_main-default ml-2 mr-10'>
+            <p
+              className='text text_type_main-default ml-2 mr-10'
+              data-cy='constructor'
+            >
               Конструктор
             </p>
           </NavLink>

@@ -1,7 +1,18 @@
 {
   "success": true,
-  "name": "TEST Новый бургер",
   "order": {
-    "number": 1
+    "_id": "1",
+    "ingredients": [],
+    "owner": {
+      "email": "test@mail.com",
+      "name": "test"
+    },
+    "status": "done",
+    "name": "test burger",
+    "createdAt": "2024-05-27T17:37:54.522Z",
+    "updatedAt": "2024-05-27T17:37:54.946Z",
+    "number": 1,
+    "price": 2323
   }
 }
+
