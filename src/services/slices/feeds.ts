@@ -1,9 +1,5 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import {
-  getFeedsApi,
-  getIngredientsApi,
-  getOrdersApi
-} from '../../utils/burger-api';
+import { getFeedsApi } from '../../utils/burger-api';
 import { TOrder, RequestStatus, TOrdersData } from '../../utils/types';
 
 type FeedState = {
