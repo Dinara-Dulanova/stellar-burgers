@@ -3,7 +3,6 @@ import constructorReducer, {
   moveConstructorItemUP,
   moveConstructorItemDown,
   deleteConstructorItem,
-  clearConstructorItems,
 } from './constructor';
 
 describe('constructor reducer', () => {
