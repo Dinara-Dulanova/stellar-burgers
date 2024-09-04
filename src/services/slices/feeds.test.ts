@@ -1,15 +1,9 @@
-import { feedsReducer, fetchFeeds } from './feeds';
+import { feedsReducer, fetchFeeds, initialState } from './feeds';
 import { RequestStatus } from '../../utils/types';
 
 describe('feeds reducer', () => {
-  const initialState = {
-    feeds: { orders: [], total: 0, totalToday: 0 },
-    status: RequestStatus.Idle,
-  };
-
   test('test fetchFeeds.pending', () => {
     const state = feedsReducer(initialState, fetchFeeds.pending(RequestStatus.Loading));
-
     expect(state).toEqual({
       ...initialState,
       status: RequestStatus.Loading,
@@ -34,7 +28,6 @@ describe('feeds reducer', () => {
       totalToday: 1,
     };
     const state = feedsReducer(initialState, fetchFeeds.fulfilled(mockFeedsData, ''));
-
     expect(state).toEqual({
       feeds: mockFeedsData,
       status: RequestStatus.Succes,
@@ -47,7 +40,6 @@ describe('feeds reducer', () => {
       initialState,
       fetchFeeds.rejected(mockError, '')
     );
-
     expect(state).toEqual({
       ...initialState,
       status: RequestStatus.Failed,

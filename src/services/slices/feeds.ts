@@ -7,7 +7,7 @@ type FeedState = {
   status: RequestStatus;
 };
 
-const initialState: FeedState = {
+export const initialState: FeedState = {
   feeds: { orders: [], total: 0, totalToday: 0 },
   status: RequestStatus.Idle
 };

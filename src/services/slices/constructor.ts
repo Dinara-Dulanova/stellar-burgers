@@ -10,7 +10,7 @@ type ConstructorState = {
 };
 
 // Инициальное состояние
-const initialState: ConstructorState = {
+export const initialState: ConstructorState = {
   ingredients: [],
   bun: null
 };

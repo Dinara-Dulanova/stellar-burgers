@@ -1,16 +1,23 @@
-import { ordersReducer, fetchOrders, createOrder, clearOrder } from './orders';
+import { ordersReducer, fetchOrders, createOrder, clearOrder, initialState } from './orders';
 import { RequestStatus, TOrder, TOrdersData } from '../../utils/types';
 
 describe('orders reducer', () => {
-  const initialState = {
-    orders: [],
-    status: RequestStatus.Idle,
-    orderRequest: false,
-    orderModalData: null
-  };
+  const mockOrder: TOrder =
+    {
+      _id: '1',
+      status: 'done',
+      name: 'test order',
+      createdAt: '2024-09-01',
+      updatedAt: '2024-09-01',
+      number: 1,
+      ingredients: [],
+    };
+
+  const mockError = new Error('Error');
 
   // Test fetchOrders (получаю свои заказы)
   describe('fetchOrders', () => {
+
     test('test fetchOrders.pending', () => {
       const state = ordersReducer(initialState, fetchOrders.pending(RequestStatus.Loading));
       expect(state).toEqual({
@@ -22,17 +29,7 @@ describe('orders reducer', () => {
     test('test fetchOrders.fulfilled', () => {
       const mockOrders = [
         {
-          _id: '1',
-          ingredients: [],
-          owner: {
-            email: "test@mail.com",
-            name: "test"
-          },
-          status: 'done',
-          name: 'test order',
-          createdAt: '2024-09-01',
-          updatedAt: '2024-09-01',
-          number: 1,
+          ...mockOrder,
           price: 2323
         },
       ];
@@ -46,7 +43,6 @@ describe('orders reducer', () => {
     });
 
     test('test fetchOrders.rejected', () => {
-      const mockError = new Error('Error');
       const state = ordersReducer(initialState, fetchOrders.rejected(mockError, ''));
       expect(state).toEqual({
         ...initialState,
@@ -67,16 +63,6 @@ describe('orders reducer', () => {
     });
 
     test('test createOrder.fulfilled', () => {
-      const mockOrder: TOrder =
-        {
-          _id: '1',
-          status: 'done',
-          name: 'test order',
-          createdAt: '2024-09-01',
-          updatedAt: '2024-09-01',
-          number: 1,
-          ingredients: [],
-        };
       const state = ordersReducer(initialState, createOrder.fulfilled(mockOrder, '', []));
       expect(state).toEqual({
         ...initialState,
@@ -87,7 +73,6 @@ describe('orders reducer', () => {
     });
 
     test('test createOrder.rejected', () => {
-      const mockError = new Error('Error');
       const state = ordersReducer(initialState, createOrder.rejected(mockError, '', []));
       expect(state).toEqual({
         ...initialState,
@@ -97,21 +82,12 @@ describe('orders reducer', () => {
   });
 
   test('test clearOrder reducer', () => {
-    const mockOrder: TOrder =
-      {
-        _id: '1',
-        status: 'done',
-        name: 'test order',
-        createdAt: '2024-09-01',
-        updatedAt: '2024-09-01',
-        number: 1,
-        ingredients: [],
-      };
     const state = ordersReducer({
       ...initialState,
       orderRequest: true,
       orderModalData: mockOrder
     }, clearOrder());
+
     expect(state).toEqual({
       ...initialState,
       orderRequest: false,

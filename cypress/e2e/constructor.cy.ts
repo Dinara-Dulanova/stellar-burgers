@@ -1,20 +1,22 @@
-
+const dataCyBun = "643d69a5c3f7b9001cfa093c";
+const dataCyIngredient = "643d69a5c3f7b9001cfa0941";
+const testUrl = "http://localhost:4000/"
 describe('', function () {
   beforeEach(function() {
-    cy.visit('http://localhost:4000/');
+    cy.visit(`${testUrl}`);
     cy.intercept('GET', 'api/ingedients', { fixture: 'ingredients.json' });
   });
 
 
   describe('add all ingredients', function() {
     it('add bun', function() {
-      cy.get('[data-cy="643d69a5c3f7b9001cfa093c"]').contains('Добавить').click({ force: true });
+      cy.get(`[data-cy=${dataCyBun}]`).contains('Добавить').click({ force: true });
       cy.get('[data-cy="bun"]').should('contain', 'Краторная булка N-200i');
       cy.get('.constructor-element__text').should('contain', 'Краторная булка N-200i');
     });
 
     it('add ingredient', function() {
-      cy.get('[data-cy="643d69a5c3f7b9001cfa0941"]').contains('Добавить').click({ force: true });
+      cy.get(`[data-cy=${dataCyIngredient}]`).contains('Добавить').click({ force: true });
       cy.get('[data-cy="ingredient"]').should('contain', 'Биокотлета из марсианской Магнолии');
       cy.get('.constructor-element__text').should('contain', 'Биокотлета из марсианской Магнолии');
     });
@@ -23,18 +25,18 @@ describe('', function () {
 
   describe('modal', function() {
     it('open ingredient modal', function() {
-      cy.get('[data-cy="643d69a5c3f7b9001cfa0941"]').click();
+      cy.get(`[data-cy=${dataCyIngredient}]`).click();
       cy.get('[data-cy="ingredient-modal"]').should('contain', 'Детали ингредиента');
     });
 
     it('close ingredient modal by cross', function() {
-      cy.get('[data-cy="643d69a5c3f7b9001cfa0941"]').click();   //открыли модалку
+      cy.get(`[data-cy=${dataCyIngredient}]`).click();   //открыли модалку
       cy.get('[data-cy="close-modal"]').click();  //кликнули на крестик
       cy.get('[data-cy="ingredient-modal"]').should('not.exist');  //проверяем что нет ингредиента с атрибутом ingredient-modal
     });
 
     it('close ingredient modal by overlay', function() {
-      cy.get('[data-cy="643d69a5c3f7b9001cfa0941"]').click();   //открыли модалку
+      cy.get(`[data-cy=${dataCyIngredient}]`).click();   //открыли модалку
       cy.get('[data-cy="overlay-modal"]').click({ force: true });
       cy.get('[data-cy="ingredient-modal"]').should('not.exist');  //проверяем что нет ингредиента с атрибутом ingredient-modal
     });
@@ -63,8 +65,8 @@ describe('', function () {
     });
 
     it('create order', function() { //Собирается бургер
-      cy.get('[data-cy="643d69a5c3f7b9001cfa093c"]').contains('Добавить').click({ force: true });
-      cy.get('[data-cy="643d69a5c3f7b9001cfa0941"]').contains('Добавить').click({ force: true });
+      cy.get(`[data-cy=${dataCyBun}]`).contains('Добавить').click({ force: true });
+      cy.get(`[data-cy=${dataCyIngredient}]`).contains('Добавить').click({ force: true });
       cy.get('[data-cy="burger-price"]').invoke('text').then(priceText => {  //собран, так как цена больше 0
         expect(parseInt(priceText.trim(), 10)).to.be.greaterThan(0);
       });

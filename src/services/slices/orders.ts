@@ -10,7 +10,7 @@ type TOrderState = {
   orderModalData: TOrder | null;
 };
 
-const initialState: TOrderState = {
+export const initialState: TOrderState = {
   orders: [],
   status: RequestStatus.Idle,
   orderRequest: false,

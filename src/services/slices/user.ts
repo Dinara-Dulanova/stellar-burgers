@@ -9,7 +9,6 @@ import {
   TRegisterData,
   updateUserApi
 } from '../../utils/burger-api';
-import { fetchOrders } from './orders';
 import { deleteCookie, getCookie, setCookie } from '../../utils/cookie';
 
 type TUserState = {
@@ -18,7 +17,7 @@ type TUserState = {
   status: RequestStatus;
 };
 
-const initialState: TUserState = {
+export const initialState: TUserState = {
   userData: null,
   loginUserError: undefined,
   status: RequestStatus.Idle

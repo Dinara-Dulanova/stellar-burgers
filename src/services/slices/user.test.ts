@@ -1,4 +1,4 @@
-import { userReducer, registerUser, loginUser, logoutUser, fillUserData, errorFillUserData, updateUser } from './user';
+import { userReducer, registerUser, loginUser, logoutUser, fillUserData, errorFillUserData, updateUser, initialState } from './user';
 import { RequestStatus, TUser } from '../../utils/types';
 import { TLoginData } from '@api';
 
@@ -18,13 +18,16 @@ const mockUser: TUser = {
   name: 'test',
 };
 
-describe('user reducer', () => {
-  const initialState = {
-    userData: null,
-    loginUserError: undefined,
-    status: RequestStatus.Idle,
-  };
+const mockResponse = {
+  user: mockUser,
+  refreshToken: 'refreshToken',
+  accessToken: 'accessToken',
+  success: true
+};
 
+const error = new Error('error');
+
+describe('user reducer', () => {
   // Test registerUser
   describe('registerUser', () => {
     test('test registerUser.pending', () => {
@@ -36,12 +39,6 @@ describe('user reducer', () => {
     });
 
     test('test registerUser.fulfilled', () => {
-      const mockResponse = {
-        user: mockUser,
-        refreshToken: 'refreshToken',
-        accessToken: 'accessToken',
-        success: true
-      };
       const state = userReducer(initialState, registerUser.fulfilled(mockResponse, '', registerMockData));
       expect(state).toEqual({
         userData: mockUser,
@@ -50,8 +47,7 @@ describe('user reducer', () => {
     });
 
     test('test registerUser.rejected', () => {
-      let errorMock = new Error('error');
-      const state = userReducer(initialState, registerUser.rejected(errorMock, '', registerMockData));
+      const state = userReducer(initialState, registerUser.rejected(error, '', registerMockData));
       expect(state).toEqual({
         ...initialState,
         status: RequestStatus.Failed,
@@ -70,13 +66,6 @@ describe('user reducer', () => {
     });
 
     test('test loginUser.fulfilled', () => {
-
-      const mockResponse = {
-        user: mockUser,
-        refreshToken: 'refreshToken',
-        accessToken: 'accessToken',
-        success: true
-      };
       const state = userReducer(initialState, loginUser.fulfilled(mockResponse, '', loginMockData));
       expect(state).toEqual({
         userData: mockUser,
@@ -86,7 +75,7 @@ describe('user reducer', () => {
     });
 
     test('test loginUser.rejected', () => {
-      const error = new Error('error');
+      // const error = new Error('error');
       const state = userReducer(initialState, loginUser.rejected(error, '', loginMockData));
       expect(state).toEqual({
         ...initialState,
@@ -124,7 +113,7 @@ describe('user reducer', () => {
     });
 
     test('test logoutUser.rejected', () => {
-      const error = new Error('error');
+      // const error = new Error('error');
       const state = userReducer(initialState, logoutUser.rejected(error, ''));
       expect(state).toEqual({
         ...initialState,
@@ -145,14 +134,6 @@ describe('user reducer', () => {
     });
 
     test('test updateUser.fulfilled', () => {
-      const mockUser: TUser = {
-        email: 'test@example.com',
-        name: 'Test User',
-      };
-      const mockResponse = {
-        user: mockUser,
-        success: true
-      };
       const state = userReducer(initialState, updateUser.fulfilled(mockResponse, '', registerMockData));
       expect(state).toEqual({
         userData: mockUser,
@@ -162,7 +143,6 @@ describe('user reducer', () => {
     });
 
     test('test updateUser.rejected', () => {
-      const error = new Error('error');
       const state = userReducer(initialState, updateUser.rejected(error, '', registerMockData));
       expect(state).toEqual({
         ...initialState,

@@ -1,12 +1,7 @@
-import { ingredientsReducer, fetchIngredients } from './ingredients';
+import { ingredientsReducer, fetchIngredients, initialState} from './ingredients';
 import { RequestStatus } from '../../utils/types';
 
 describe('ingredients reducer', () => {
-  const initialState = {
-    ingredients: [],
-    status: RequestStatus.Idle
-  };
-
   test('test fetchIngredients.pending', () => {
     const state = ingredientsReducer(initialState, fetchIngredients.pending(RequestStatus.Loading));
     expect(state).toEqual({
