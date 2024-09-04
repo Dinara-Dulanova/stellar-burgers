@@ -1,9 +1,5 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import {
-  getFeedsApi,
-  getIngredientsApi,
-  getOrdersApi
-} from '../../utils/burger-api';
+import { getFeedsApi } from '../../utils/burger-api';
 import { TOrder, RequestStatus, TOrdersData } from '../../utils/types';
 
 type FeedState = {
@@ -11,7 +7,7 @@ type FeedState = {
   status: RequestStatus;
 };
 
-const initialState: FeedState = {
+export const initialState: FeedState = {
   feeds: { orders: [], total: 0, totalToday: 0 },
   status: RequestStatus.Idle
 };

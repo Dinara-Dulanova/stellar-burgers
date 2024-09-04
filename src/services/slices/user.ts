@@ -1,7 +1,6 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { RequestStatus, TUser } from '@utils-types';
+import { RequestStatus, TUser } from '../../utils/types';
 import {
-  getOrdersApi,
   getUserApi,
   loginUserApi,
   logoutApi,
@@ -9,24 +8,17 @@ import {
   TLoginData,
   TRegisterData,
   updateUserApi
-} from '@api';
-import { fetchOrders } from './orders';
+} from '../../utils/burger-api';
 import { deleteCookie, getCookie, setCookie } from '../../utils/cookie';
 
 type TUserState = {
-  // userData: TUser | null;
-  // status: RequestStatus;
-  // isAuthChecked: boolean, // флаг для статуса проверки токена пользователя
   userData: TUser | null;
   loginUserError: string | undefined;
   status: RequestStatus;
 };
 
-const initialState: TUserState = {
-  // userData: null,
-  // status: RequestStatus.Idle
+export const initialState: TUserState = {
   userData: null,
-  // isAuthChecked: false,
   loginUserError: undefined,
   status: RequestStatus.Idle
 };
